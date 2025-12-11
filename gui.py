@@ -19,7 +19,7 @@ class DetectrApp(ctk.CTk):
         super().__init__()
 
         # Window Setup
-        self.title("Detectr Pro")
+        self.title("Detectr Pro - Network Intrusion Detection System")
         self.geometry("1100x750")
         self.minsize(900, 650)
         
@@ -51,7 +51,7 @@ class DetectrApp(ctk.CTk):
         # Branding
         self.logo_label = ctk.CTkLabel(
             self.sidebar, 
-            text="DETECTR", 
+            text="DETECTR PRO", 
             font=ctk.CTkFont(family="Roboto", size=28, weight="bold"),
             text_color=self.colors["accent"]
         )
@@ -59,7 +59,7 @@ class DetectrApp(ctk.CTk):
         
         self.author_label = ctk.CTkLabel(
             self.sidebar, 
-            text="by SBTabanar", 
+            text="Developed by SBTabanar", 
             font=ctk.CTkFont(family="Roboto", size=12, slant="italic"), 
             text_color=self.colors["text_secondary"]
         )
@@ -146,7 +146,7 @@ class DetectrApp(ctk.CTk):
         
         self.header_label = ctk.CTkLabel(
             self.header_frame, 
-            text="Network Dashboard", 
+            text="Live Traffic Monitor", 
             font=ctk.CTkFont(family="Roboto", size=32, weight="bold"),
             text_color=self.colors["text_primary"]
         )
@@ -154,7 +154,7 @@ class DetectrApp(ctk.CTk):
 
         self.status_badge = ctk.CTkLabel(
             self.header_frame,
-            text="● SYSTEM IDLE",
+            text="● IDLE",
             font=ctk.CTkFont(family="Roboto", size=12, weight="bold"),
             text_color=self.colors["text_secondary"],
             fg_color=self.colors["badge_idle"],
@@ -190,7 +190,7 @@ class DetectrApp(ctk.CTk):
 
         self.log_label = ctk.CTkLabel(
             self.log_frame, 
-            text="Event Log", 
+            text="Security Alerts & System Logs", 
             font=ctk.CTkFont(family="Roboto", size=16, weight="bold"),
             text_color=self.colors["text_primary"]
         )
@@ -291,7 +291,7 @@ class DetectrApp(ctk.CTk):
         # Update UI (Optimistic)
         self.btn_run.configure(state="normal", text="START MONITORING", fg_color=self.colors["accent"], text_color="white")
         self.btn_stop.configure(state="disabled", fg_color=self.colors["bg_main"], text_color=self.colors["danger"])
-        self.status_badge.configure(text="● SYSTEM IDLE", text_color=self.colors["text_secondary"], fg_color=self.colors["badge_idle"])
+        self.status_badge.configure(text="● IDLE", text_color=self.colors["text_secondary"], fg_color=self.colors["badge_idle"])
         self.entry_dos.configure(state="normal")
         self.entry_scan.configure(state="normal")
         
@@ -315,7 +315,7 @@ class DetectrApp(ctk.CTk):
             # but CustomTkinter handles simple config updates well usually.
             self.btn_run.configure(state="normal", text="START MONITORING", fg_color=self.colors["accent"], text_color="white")
             self.btn_stop.configure(state="disabled", fg_color=self.colors["bg_main"], text_color=self.colors["danger"])
-            self.status_badge.configure(text="● SYSTEM IDLE", text_color=self.colors["text_secondary"], fg_color=self.colors["badge_idle"])
+            self.status_badge.configure(text="● IDLE", text_color=self.colors["text_secondary"], fg_color=self.colors["badge_idle"])
             self.entry_dos.configure(state="normal")
             self.entry_scan.configure(state="normal")
 
