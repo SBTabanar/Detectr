@@ -3,7 +3,17 @@ from collections import defaultdict
 import time
 
 class PacketAnalyzer:
+    """
+    Analyzes network packets to detect suspicious activity.
+    Implements rules for DoS detection and Port Scanning.
+    """
     def __init__(self, log_callback):
+        """
+        Initialize the analyzer with a callback for logging alerts.
+        
+        Args:
+            log_callback (func): Function to call with alert messages.
+        """
         self.log_callback = log_callback
         self.start_time = time.time()
         
@@ -15,6 +25,10 @@ class PacketAnalyzer:
     def process_packet(self, packet):
         """
         Callback function triggered for every captured packet.
+        Analyzes the packet against defined intrusion detection rules.
+        
+        Args:
+            packet (scapy.Packet): The captured packet.
         """
         if not packet.haslayer(IP):
             return

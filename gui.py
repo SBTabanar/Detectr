@@ -11,6 +11,10 @@ ctk.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
 class DetectrApp(ctk.CTk):
+    """
+    Main Application Class for Detectr Pro.
+    Handles the GUI initialization, user interactions, and linking with the PacketAnalyzer.
+    """
     def __init__(self):
         super().__init__()
 
@@ -26,22 +30,25 @@ class DetectrApp(ctk.CTk):
         # --- Sidebar (Controls) ---
         self.sidebar = ctk.CTkFrame(self, width=220, corner_radius=0)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
-        self.sidebar.grid_rowconfigure(5, weight=1)
+        self.sidebar.grid_rowconfigure(6, weight=1)
 
         self.logo_label = ctk.CTkLabel(self.sidebar, text="DETECTR", font=ctk.CTkFont(size=24, weight="bold"))
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 0))
+        
+        self.author_label = ctk.CTkLabel(self.sidebar, text="by SBTabanar", font=ctk.CTkFont(size=12, slant="italic"), text_color="gray")
+        self.author_label.grid(row=1, column=0, padx=20, pady=(0, 10))
 
         self.lbl_mode = ctk.CTkLabel(self.sidebar, text="Analysis Mode:", anchor="w")
-        self.lbl_mode.grid(row=1, column=0, padx=20, pady=(20, 0), sticky="w")
+        self.lbl_mode.grid(row=2, column=0, padx=20, pady=(20, 0), sticky="w")
         
         self.option_mode = ctk.CTkOptionMenu(self.sidebar, values=["Live Packet Sniffer", "Log Analysis"])
-        self.option_mode.grid(row=2, column=0, padx=20, pady=10)
+        self.option_mode.grid(row=3, column=0, padx=20, pady=10)
 
         self.btn_stop = ctk.CTkButton(self.sidebar, text="STOP", fg_color="#555", state="disabled", command=self.stop_detection)
-        self.btn_stop.grid(row=3, column=0, padx=20, pady=10)
+        self.btn_stop.grid(row=4, column=0, padx=20, pady=10)
 
         self.btn_run = ctk.CTkButton(self.sidebar, text="START DETECTION", fg_color="#e74c3c", hover_color="#c0392b", command=self.start_detection)
-        self.btn_run.grid(row=4, column=0, padx=20, pady=10)
+        self.btn_run.grid(row=5, column=0, padx=20, pady=10)
 
         # --- Main Content Area ---
         self.main_frame = ctk.CTkFrame(self, corner_radius=10, fg_color="transparent")
@@ -70,11 +77,32 @@ class DetectrApp(ctk.CTk):
         self.sniff_thread = None
 
     def log(self, message):
+        """
+        Logs a message to the GUI console and a persistent log file.
+        
+        Args:
+            message (str): The message string to log.
+        """
         # Ensure thread safety for GUI updates
-        self.log_box.insert("end", f">> {message}\n")
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        formatted_message = f"[{timestamp}] >> {message}"
+        
+        # GUI Log
+        self.log_box.insert("end", f"{formatted_message}\n")
         self.log_box.see("end")
+        
+        # File Log
+        try:
+            with open("detectr.log", "a") as f:
+                f.write(f"{formatted_message}\n")
+        except Exception as e:
+            print(f"Logging error: {e}")
 
     def start_detection(self):
+        """
+        Starts the packet sniffing process in a separate thread.
+        Initializes the PacketAnalyzer and updates UI state.
+        """
         if self.is_running: return
 
         self.is_running = True
@@ -92,6 +120,9 @@ class DetectrApp(ctk.CTk):
         self.sniff_thread.start()
 
     def stop_detection(self):
+        """
+        Signals the sniffing thread to stop and updates the UI state.
+        """
         self.is_running = False
         self.btn_run.configure(state="normal", text="START DETECTION")
         self.btn_stop.configure(state="disabled", fg_color="#555")
@@ -99,6 +130,10 @@ class DetectrApp(ctk.CTk):
         self.log("Stopping Sniffer...")
 
     def _sniff_packets(self):
+        """
+        Internal method to run scapy.sniff in a blocking manner (to be threaded).
+        Catches exceptions (like missing Npcap) and logs them.
+        """
         try:
             # Sniff packets. stop_filter checks self.is_running every packet
             sniff(prn=self.analyzer.process_packet, store=0, stop_filter=lambda x: not self.is_running)
