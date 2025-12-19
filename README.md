@@ -1,89 +1,65 @@
-# Detectr Pro
+# Detectr Pro - Network Intrusion Detection System 📡
 
-**Detectr Pro** is a lightweight Network Intrusion Detection System (NIDS) with a modern GUI built using Python, CustomTkinter, and Scapy. It monitors network traffic in real-time to detect potential threats such as Denial of Service (DoS) attempts and Port Scans.
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![Scapy](https://img.shields.io/badge/Sniffing-Scapy-red)](https://scapy.net/)
+[![GUI](https://img.shields.io/badge/GUI-CustomTkinter-blueviolet)](https://github.com/TomSchimansky/CustomTkinter)
 
-## Features
+**Detectr Pro** is a lightweight Network Intrusion Detection System (NIDS) designed for real-time traffic analysis and threat detection. Built with security professionals in mind, it provides a clean, modern interface for monitoring network anomalies.
 
-- **Real-time Packet Monitoring**: Captures and analyzes network packets on the fly.
-- **Intrusion Detection Rules**:
-  - **High Volume Traffic**: Flags IPs exceeding user-defined packet rates (Potential DoS).
-  - **Port Scanning**: Detects rapid SYN requests to multiple ports from a single source.
-  - **ARP Spoofing**: Alerts when a known IP address changes its MAC address.
-- **Traffic Dashboard**: Real-time statistics for Total, TCP, UDP, ARP, and Alert counts.
-- **Configurable Thresholds**: Adjust DoS limits (pps) and Port Scan sensitivity directly from the GUI.
-- **Modern GUI**: A high-contrast, dark-themed interface built with `customtkinter`.
-- **Logging**:
-  - **Live Console**: displays alerts and status updates in the application window.
-  - **File Logging**: Saves all events to `detectr.log` for post-analysis.
-- **Cross-Platform**: Compatible with Windows (requires Npcap) and Linux (requires Root).
+## 🚀 Core Capabilities
 
-## Installation
+- **Real-time Packet Inspection**: Deep packet analysis using Scapy to monitor every bit of traffic on the selected interface.
+- **Advanced Threat Detection Rules**:
+  - **DoS Attack Monitor**: Tracks packet rates per IP. Triggers alerts when thresholds are exceeded.
+  - **Port Scan Detection**: Identifies rapid connection attempts across multiple destination ports from a single source.
+  - **ARP Poisoning Protection**: Monitors the ARP table for suspicious MAC address changes associated with static IPs.
+- **Interactive Dashboard**: Real-time counters for TCP, UDP, and ARP protocols alongside a cumulative alert system.
+- **Dynamic Configuration**: Hot-swap sensitivity thresholds (DoS pps and Port Scan limits) without restarting the capture engine.
+- **Automated Logging**: Forensic logging to `detectr.log` for post-incident investigation.
 
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/your-username/detectr.git
-    cd detectr
-    ```
+## 🛠️ Technical Stack
 
-2.  **Install Dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
+- **Engine:** Python 3.11
+- **Packet Capture:** Scapy (Network abstraction layer)
+- **UI Framework:** CustomTkinter (Modern dark-themed UI)
+- **Forensics:** Standard `logging` library
 
-3.  **Install Packet Capture Driver (Windows Only)**:
-    - Download and install **Npcap** from [https://npcap.com/](https://npcap.com/).
-    - **Important**: During installation, ensure you check "Install Npcap in WinPcap API-compatible Mode".
+## ⚙️ Installation
 
-## Usage
+### 1. Requirements
+- Python 3.8+
+- **Windows:** [Npcap](https://npcap.com/) (Must be installed in "WinPcap API-compatible Mode")
+- **Linux:** Root privileges and `libpcap-dev`
 
-### Configuration & Dashboard
-- **Detection Thresholds**: Before starting, you can adjust the sensitivity of the intrusion detection rules in the sidebar:
-  - **DoS Limit (pps)**: The maximum number of packets per second allowed from a single IP before alerting.
-  - **Scan Limit (ports)**: The number of unique destination ports a single IP can target before being flagged as a port scan.
-- **Traffic Statistics**: The main dashboard displays real-time counters for:
-  - **Total**: Total packets captured.
-  - **TCP/UDP/ARP**: Breakdown by protocol.
-  - **Alerts**: Cumulative count of security alerts triggered.
+### 2. Setup
+```bash
+git clone https://github.com/SBTabanar/detectr.git
+cd detectr
+pip install -r requirements.txt
+```
 
-### Running from Source
+## 📖 Usage
 
-1.  Run the application entry point:
-    ```bash
-    python nids.py
-    ```
-2.  Adjust thresholds if necessary (default: 100 pps, 15 ports).
-3.  Click **START MONITORING** to begin monitoring.
-4.  Click **STOP SESSION** to end the session.
+### Running the System
+```bash
+# Windows (Must run as Administrator)
+python nids.py
 
-### Running the Executable (Windows)
+# Linux (Must run with sudo)
+sudo python3 nids.py
+```
 
-1.  Navigate to the `dist` folder.
-2.  Right-click `Detectr.exe` and select **Run as Administrator** (required for raw packet capture).
+1. Select your network interface from the dropdown (if applicable).
+2. Adjust **DoS Threshold** and **Scan Limit** based on your network environment.
+3. Click **START MONITORING** to begin real-time analysis.
 
-## Troubleshooting
+## 🧪 Testing
+The project includes a `test_traffic.py` script to simulate various network attacks to verify detection capabilities:
+```bash
+python test_traffic.py
+```
 
-- **No Packets Detected**: Ensure you are running as Administrator (Windows) or Root (Linux). Check that Npcap is installed with "WinPcap API-compatible Mode" enabled.
-- **Visual Glitches**: If the GUI looks incorrect, ensure you have the `customtkinter` assets collected properly during the build process (already handled by the build script).
-- **False Positives**: If you see too many alerts, try increasing the "DoS Limit" or "Scan Limit" in the sidebar.
-
-## Development
-
-- **Run Tests**:
-  ```bash
-  python test_traffic.py
-  ```
-- **Build Executable**:
-  ```bash
-  # Using the included batch file (Windows)
-  build.bat
-  
-  # Manual Build command
-  python -m PyInstaller --noconfirm --onefile --windowed --name "Detectr" --collect-all customtkinter nids.py
-  ```
-
-## Credits
-
-- **Author**: SBTabanar
-- **Libraries**:
-  - [Scapy](https://scapy.net/) (Packet manipulation)
-  - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) (GUI)
+## 🧑‍💻 Author
+**Sergei Benjamin Tabanar**
+*BS IT Student | Network & Information Security Specialist*
+[LinkedIn](https://linkedin.com) • [Portfolio](https://sergeibenjamin.com)
